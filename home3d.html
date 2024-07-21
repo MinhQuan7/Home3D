@@ -1,36 +1,862 @@
-<div class="sketchfab-embed-wrapper">
-    <iframe 
-      title="Modern House 3D" 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Room</title>
+    <style>
+        :root {
+            --bg1: #8DD9E7;
+            --bg2: #86C6D3;
+            --bg3: #5C8F9B;
+            --floor1: #EBE4D1;
+            --floor2: #c9c5b3;
+            --floor3: #bab6a6;
+            --floor4: #a49e82;
+            --wall1: #E3EAF0;
+            --wall2: #CCD8DD;
+            --wall2b: #c0ccd0;
+            --wall2c: #b1bec2;
+            --wall3: #9aadb5;
+            --wood1: #FEEFCD;
+            --wood2: #E8CFA9;
+            --wood3: #CDAC8C;
+            --wood3b: #bfa183;
+            --wood4: #a48669;
+            --wood5: #996951;
+            --white1: #EDEDE4;
+            --white2: #D9DFD4;
+            --white3: #c3c9be;
+            --white4: #aeb4a9;
+            --blue1: #4F8FC0;
+            --blue2: #4383b4;
+            --blue3: #3473a3;
+            --blue4: #27618c;
+            --black1: #474747;
+            --black2: #393939;
+            --black3: #222222;
+            --black4: #1a1a1a;
+            --green1: #89B863;
+            --green2: #6faa40;
+            --green3: #59a11f;
+            --yellow1: #e9e35a;
+            --yellow2: #dbd54d;
+            --yellow3: #d5ce32;
+        }
+        *, *::after, *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            transform-style: preserve-3d;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            outline: none;
+            appearance: none;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg1);
+            overflow: hidden;
+        }
+        .face {
+            position: absolute;
+        }
+        .flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .room,
+        .shadows {
+            position: absolute;
+            width: 30vw;
+            height: 45vw;
+            transform: perspective(10000px) rotateX(60deg) rotateZ(55deg) translateZ(-8vw);
+            transition: transform 100ms linear;
+        }
+        .shadow1,
+        .shadow2,
+        .shadow3,
+        .shadow4,
+        .shadow5,
+        .shadow6 {
+            position: absolute;
+            top: 0vw;
+            left: 0vw;
+            background-color: var(--bg3);
+            filter: blur(.25vw);
+        }
+        .shadow1 {
+            width: 30.25vw;
+            height: 37.25vw;
+        }
+        .shadow2 {
+            top: 37vw;
+            left: 15vw;
+            width: 15.25vw;
+            height: 8.25vw;
+        }
+        .shadow3,
+        .shadow4 {
+            width: 12.25vw;
+            height: 37.25vw;
+            left: -12vw;
+            background-color: transparent;
+            background-image: linear-gradient(to left, var(--bg3), var(--bg2));
+        }
+        .shadow4 {
+            width: 25vw;
+            height: 1.25vw;
+            top: 37vw;
+            left: -10vw;
+            filter: blur(1vw);
+            opacity: .75;
+        }
+        .shadow5 {
+            top: -2vw;
+            left: 27vw;
+            width: 5vw;
+            height: 5vw;
+            background-color: transparent;
+            background-image: radial-gradient(circle, var(--bg3), var(--bg2) 80%, transparent);
+            border-radius: 50%;
+            filter: blur(1vw);
+            opacity: .5;
+        }
+        .shadow6 {
+            top: 45vw;
+            left: 15vw;
+            width: 15.25vw;
+            height: 1.25vw;
+            background-color: transparent;
+            background-image: linear-gradient(to bottom, var(--bg3), var(--bg2) 80%, transparent);
+            transform-origin: bottom right;
+            filter: blur(1vw);
+            opacity: .75;
+        }
+        .os {
+            position: absolute;
+            filter: blur(.2vw);
+            background-image: linear-gradient(to bottom, var(--floor2), transparent);
+        }
+        .fs {
+            position: absolute;
+            width: 115%;
+            height: 110%;
+            background-image: linear-gradient(to bottom, var(--floor3), var(--floor4), var(--floor4));
+            filter: blur(.175vw);
+        }
+        .lg {
+            position: absolute;
+            width: 5vw;
+            height: 150%;
+            transform: rotateZ(20deg);
+            background-image: linear-gradient(to right, transparent, var(--white2), transparent);
+            opacity: .35;
+            filter: blur(.5vw);
+        }
+        .at {
+            position: absolute;
+            top: 0vw;
+            left: 0vw;
+            width: 30vw;
+            height: 37vw;
+        }
+        .at__top {
+            overflow: hidden;
+        }
+        .at__top .os1 {
+            width: 6vw;
+            height: 100%;
+            background-image: linear-gradient(to right, var(--floor3), transparent);
+        }
+        .at__top .os2 {
+            width: 100%;
+            height: 6vw;
+        }
+        .ws {
+            position: absolute;
+            filter: blur(.45vw);
+            background-color: var(--floor2);
+            transform: skewX(-5deg);
+        }
+        .ws1,
+        .ws2,
+        .ws3 {
+            left: 1.5vw;
+            top: 1.5vw;
+            width: 5vw;
+            height: 20vw;
+        }
+        .ws2 {
+            left: 27vw;
+        }
+        .ws3 {
+            left: 52%;
+            width: .5vw;
+        }
+        .ws4,
+        .ws5 {
+            left: 1.5vw;
+            top: 1.5vw;
+            width: 28vw;
+            height: 6vw;
+        }
+        .ws5 {
+            top: 15.75vw;
+        }
+        .ws6 {
+            left: 9vw;
+            top: 1.5vw;
+            width: 14vw;
+            height: 10vw;
+        }
+        .ws7 {
+            right: 2vw;
+            top: 1.5vw;
+            width: 3vw;
+            height: 6vw;
+        }
+        .ab {
+            position: absolute;
+            top: 37vw;
+            right: 0vw;
+            width: 15vw;
+            height: 8vw;
+        }
+        .at,
+        .ab {
+            background-color: var(--wall3);
+        }
+        .bb,
+        .bt,
+        .bbl,
+        .bbr,
+        .bl {
+            position: absolute;
+            top: 0;
+            left: 1.5vw;
+            width: 28.5vw;
+            height: 1.5vw;
+        }
+        .bt {
+            transform: translateZ(12.6vw);
+        }
+        .bbl,
+        .bbr {
+            width: 3vw;
+            height: 9vw;
+            transform: translateZ(3.6vw);
+        }
+        .bbr {
+            left: 27vw;
+        }
+        .bl {
+            width: 1.5vw;
+            height: 37vw;
+            transform: translateZ(.6vw);
+        }
+        .ventana {
+            position: absolute;
+            top: 0;
+            left: 4.5vw;
+            width: 22.5vw;
+            height: 1.5vw;
+            transform: translateZ(3.6vw);
+        }
+        .ventana__back {
+            top: .75vw;
+            background-image: radial-gradient(var(--bg2), var(--bg3));
+            opacity: .5;
+            overflow: hidden;
+        }
+        .ventana-l,
+        .ventana-c,
+        .ventana-r,
+        .ventana-t,
+        .ventana-b {
+            position: absolute;
+            top: .5vw;
+            width: .5vw;
+            height: .5vw;
+        }
+        .ventana-t {
+            transform: translateZ(8.5vw);
+        }
+        .cama {
+            position: absolute;
+            top: 25vw;
+            left: 1.75vw;
+            width: 15vw;
+            height: 10vw;
+            transform: translateZ(.6vw);
+        }
+        .repisa {
+            position: absolute;
+            left: 1.5vw;
+            top: 26vw;
+            width: 2.5vw;
+            height: 8vw;
+            transform: translateZ(10vw);
+            cursor: pointer;
+        }
+        .buro {
+            position: absolute;
+            left: 1.5vw;
+            top: 20.5vw;
+            width: 3vw;
+            height: 4vw;
+            transform: translateZ(.6vw);
+            cursor: pointer;
+        }
+        .bocina {
+            position: absolute;
+            left: 2.75vw;
+            top: 21vw;
+            width: .5vw;
+            height: 3vw;
+            transform: translateZ(5vw);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .libro {
+            position: absolute;
+            width: 2vw;
+            height: .5vw;
+            cursor: pointer;
+        }
+        .libro__front {
+            background-color: var(--blue3);
+        }
+        .librero {
+            position: absolute;
+            left: 1.5vw;
+            top: 11vw;
+            width: 3vw;
+            height: 9vw;
+            transform: translateZ(.6vw);
+            cursor: pointer;
+        }
+        .sillon {
+            position: absolute;
+            left: 9vw;
+            top: 2vw;
+            width: 14vw;
+            height: 4vw;
+            transform: translateZ(.6vw);
+        }
+        .arbustos {
+            transform: rotateZ(25deg);
+            width: 1vw;
+            height: 3.5vw;
+            position: absolute;
+            left: 22vw;
+            top: 40vw;
+            transform: rotateZ(26deg) translateZ(.6vw);
+        }
+        .maceta {
+            position: absolute;
+            right: 2vw;
+            top: 2vw;
+            width: 3vw;
+            height: 3vw;
+            transform: translateZ(.61vw);
+        }
+        .manija {
+            position: absolute;
+            width: 1vw;
+            height: .25vw;
+        }
+        .is-repisa-open {
+            transform: rotateZ(40deg);
+            transform-origin: bottom left;
+            transition: transform .5s linear;
+        }
+        .is-bocina-active {
+            animation: bocina .5s ease infinite;
+        }
+        @keyframes bocina {
+            0%, 10%, 50% {
+                transform: translateZ(0);
+            }
+            40%, 60%, 90%, 100% {
+                transform: translateZ(-.05vw);
+            }
+        }
+        .is-librero-open {
+            transform: rotateZ(30deg);
+            transform-origin: bottom left;
+            transition: transform .5s linear;
+        }
+    </style>
+</head>
+<body>
+    <audio id="audio">
+        <source src="https://raw.githubusercontent.com/ricardoolivaalonso/recursos/master/radio/radio.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio2">
+        <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/librero.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio3">
+        <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/repisa.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio4">
+        <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/buro.mp3" type="audio/mpeg">
+    </audio>
 
-      frameborder="0" 
-  
-      allowfullscreen 
-      mozallowfullscreen="true" 
-      webkitallowfullscreen="true" 
-      allow="autoplay; fullscreen; xr-spatial-tracking" 
-      xr-spatial-tracking 
-      execution-while-out-of-viewport 
-      execution-while-not-rendered 
-      web-share 
-      
-      width="640" 
-      height="480" 
-      src="https://sketchfab.com/models/4e8547079b2b4acabe1ae8a8e8f15c51/embed">
-    </iframe>
-    <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+    <div class="shadows rb">
+        <div class="shadow6"></div>
+        <div class="shadow5"></div>
+        <div class="shadow4"></div>
+        <div class="shadow1"></div>
+        <div class="shadow2"></div>
+        <div class="shadow3"></div>
+    </div>
 
-      <a href="https://sketchfab.com/3d-models/interior-modern-house-4e8547079b2b4acabe1ae8a8e8f15c51?utm_medium=embed&utm_campaign=share-popup&utm_content=4e8547079b2b4acabe1ae8a8e8f15c51" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
-        Interior Modern House
-      </a> 
-      by 
-      <a href="https://sketchfab.com/El_Andrew?utm_medium=embed&utm_campaign=share-popup&utm_content=4e8547079b2b4acabe1ae8a8e8f15c51" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
-        LeMinhQuan
-      </a> 
-      on 
-      <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=4e8547079b2b4acabe1ae8a8e8f15c51" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
-        Sketchfab
-      </a>
-    </p>
-  </div>
+    <div class="room rb">
+        <div class="at">
+            <div class="at__front face"></div>
+            <div class="at__back face"></div>
+            <div class="at__right face"></div>
+            <div class="at__left face"></div>
+            <div class="at__top face">
+                <div class="os os1"></div>
+                <div class="os os2"></div>
+                <div class="ws1 ws"></div>
+                <div class="ws2 ws"></div>
+                <div class="ws3 ws"></div>
+                <div class="ws4 ws"></div>
+                <div class="ws5 ws"></div>
+                <div class="ws6 ws"></div>
+                <div class="ws7 ws"></div>
+            </div>
+            <div class="at__bottom face"></div>
+        </div>
+        <div class="ab">
+            <div class="ab__front face"></div>
+            <div class="ab__back face"></div>
+            <div class="ab__right face"></div>
+            <div class="ab__left face"></div>
+            <div class="ab__top face"></div>
+            <div class="ab__bottom face"></div>
+        </div>
+        <div class="bb">
+            <div class="bb__front face">
+                <div class="os os1"></div>
+                <div class="os os2"></div>
+            </div>
+            <div class="bb__back face"></div>
+            <div class="bb__right face"></div>
+            <div class="bb__left face"></div>
+            <div class="bb__top face"></div>
+            <div class="bb__bottom face"></div>
+        </div>
+        <div class="bt">
+            <div class="bt__front face"></div>
+            <div class="bt__back face"></div>
+            <div class="bt__right face"></div>
+            <div class="bt__left face"></div>
+            <div class="bt__top face"></div>
+            <div class="bt__bottom face"></div>
+        </div>
+        <div class="bbl">
+            <div class="bbl__front face"></div>
+            <div class="bbl__back face"></div>
+            <div class="bbl__right face"></div>
+            <div class="bbl__left face"></div>
+            <div class="bbl__top face"></div>
+            <div class="bbl__bottom face"></div>
+        </div>
+        <div class="bbr">
+            <div class="bbr__front face"></div>
+            <div class="bbr__back face"></div>
+            <div class="bbr__right face"></div>
+            <div class="bbr__left face"></div>
+            <div class="bbr__top face"></div>
+            <div class="bbr__bottom face"></div>
+        </div>
+        <div class="bl">
+            <div class="bl__front face"></div>
+            <div class="bl__back face"></div>
+            <div class="bl__right face">
+                <div class="os0"></div>
+                <div class="os os1"></div>
+                <div class="os os2"></div>
+                <div class="os os3"></div>
+                <div class="os os4"></div>
+                <div class="os os5"></div>
+                <div class="os os6"></div>
+            </div>
+            <div class="bl__left face">
+                <div class="os os1"></div>
+            </div>
+            <div class="bl__top face"></div>
+            <div class="bl__bottom face"></div>
+        </div>
 
-  
+        <div class="ventana">
+            <div class="ventana__back face">
+                <div class="lg lg1"></div>
+                <div class="lg lg2"></div>
+                <div class="vs vs1"></div>
+                <div class="vs vs2"></div>
+                <div class="vs vs3"></div>
+                <div class="vs vs4"></div>
+            </div>
+            <div class="ventana-l">
+                <div class="ventana-l__front face"></div>
+                <div class="ventana-l__back face"></div>
+                <div class="ventana-l__right face"></div>
+                <div class="ventana-l__left face"></div>
+                <div class="ventana-l__top face"></div>
+                <div class="ventana-l__bottom face"></div>
+            </div>
+            <div class="ventana-c">
+                <div class="ventana-c__front face"></div>
+                <div class="ventana-c__back face"></div>
+                <div class="ventana-c__right face"></div>
+                <div class="ventana-c__left face"></div>
+                <div class="ventana-c__top face"></div>
+                <div class="ventana-c__bottom face"></div>
+            </div>
+            <div class="ventana-r">
+                <div class="ventana-r__front face"></div>
+                <div class="ventana-r__back face"></div>
+                <div class="ventana-r__right face"></div>
+                <div class="ventana-r__left face"></div>
+                <div class="ventana-r__top face"></div>
+                <div class="ventana-r__bottom face"></div>
+            </div>
+            <div class="ventana-t">
+                <div class="ventana-t__front face"></div>
+                <div class="ventana-t__back face"></div>
+                <div class="ventana-t__right face"></div>
+                <div class="ventana-t__left face"></div>
+                <div class="ventana-t__top face"></div>
+                <div class="ventana-t__bottom face"></div>
+            </div>
+            <div class="ventana-b">
+                <div class="ventana-b__front face"></div>
+                <div class="ventana-b__back face"></div>
+                <div class="ventana-b__right face"></div>
+                <div class="ventana-b__left face"></div>
+                <div class="ventana-b__top face"></div>
+                <div class="ventana-b__bottom face"></div>
+            </div>
+        </div>
+
+        <div class="cama">
+            <div class="fs"></div>
+            <div class="cama-al">
+                <div class="cama-al__front face"></div>
+                <div class="cama-al__back face"></div>
+                <div class="cama-al__right face"></div>
+                <div class="cama-al__left face"></div>
+                <div class="cama-al__top face"></div>
+                <div class="cama-al__bottom face"></div>
+            </div>
+            <div class="cama-ac">
+                <div class="cama-ac__front face"></div>
+                <div class="cama-ac__back face"></div>
+                <div class="cama-ac__right face"></div>
+                <div class="cama-ac__left face"></div>
+                <div class="cama-ac__top face"></div>
+                <div class="cama-ac__bottom face"></div>
+            </div>
+            <div class="cama-ar">
+                <div class="cama-ar__front face"></div>
+                <div class="cama-ar__back face"></div>
+                <div class="cama-ar__right face"></div>
+                <div class="cama-ar__left face"></div>
+                <div class="cama-ar__top face"></div>
+                <div class="cama-ar__bottom face"></div>
+            </div>
+            <div class="cama-bc">
+                <div class="cama-bc__front face"></div>
+                <div class="cama-bc__back face"></div>
+                <div class="cama-bc__right face"></div>
+                <div class="cama-bc__left face"></div>
+                <div class="cama-bc__top face"></div>
+                <div class="cama-bc__bottom face"></div>
+            </div>
+            <div class="cama-almos">
+                <div class="cama-almo">
+                    <div class="cama-almo__sh face"></div>
+                    <div class="cama-almo__front face"></div>
+                    <div class="cama-almo__back face"></div>
+                    <div class="cama-almo__right face"></div>
+                    <div class="cama-almo__left face"></div>
+                    <div class="cama-almo__top face"></div>
+                    <div class="cama-almo__bottom face"></div>
+                </div>
+                <div class="cama-almo">
+                    <div class="cama-almo__sh face"></div>
+                    <div class="cama-almo__front face"></div>
+                    <div class="cama-almo__back face"></div>
+                    <div class="cama-almo__right face"></div>
+                    <div class="cama-almo__left face"></div>
+                    <div class="cama-almo__top face"></div>
+                    <div class="cama-almo__bottom face"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="repisa">
+            <div class="repisa-base"></div>
+            <div class="repisa-t">
+                <div class="repisa-t__front face"></div>
+                <div class="repisa-t__back face"></div>
+                <div class="repisa-t__right face"></div>
+                <div class="repisa-t__left face"></div>
+                <div class="repisa-t__top face"></div>
+                <div class="repisa-t__bottom face"></div>
+            </div>
+            <div class="repisa-b">
+                <div class="repisa-b__front face"></div>
+                <div class="repisa-b__back face"></div>
+                <div class="repisa-b__right face"></div>
+                <div class="repisa-b__left face"></div>
+                <div class="repisa-b__top face"></div>
+                <div class="repisa-b__bottom face"></div>
+            </div>
+            <div class="repisa-l">
+                <div class="repisa-l__front face"></div>
+                <div class="repisa-l__back face"></div>
+                <div class="repisa-l__right face"></div>
+                <div class="repisa-l__left face"></div>
+                <div class="repisa-l__top face"></div>
+                <div class="repisa-l__bottom face"></div>
+            </div>
+            <div class="repisa-c">
+                <div class="repisa-c__front face"></div>
+                <div class="repisa-c__back face"></div>
+                <div class="repisa-c__right face"></div>
+                <div class="repisa-c__left face"></div>
+                <div class="repisa-c__top face"></div>
+                <div class="repisa-c__bottom face"></div>
+            </div>
+            <div class="repisa-r">
+                <div class="repisa-r__front face"></div>
+                <div class="repisa-r__back face"></div>
+                <div class="repisa-r__right face"></div>
+                <div class="repisa-r__left face"></div>
+                <div class="repisa-r__top face"></div>
+                <div class="repisa-r__bottom face"></div>
+            </div>
+            <div class="repisa-puertas" id="repisa">
+                <div class="repisa-puerta repisa-p">
+                    <div class="repisa-puerta__front face"></div>
+                    <div class="repisa-puerta__back face"></div>
+                    <div class="repisa-puerta__right face flex">
+                        <div class="manija">
+                            <div class="manija__front face"></div>
+                            <div class="manija__back face"></div>
+                            <div class="manija__right face"></div>
+                            <div class="manija__left face"></div>
+                            <div class="manija__top face"></div>
+                            <div class="manija__bottom face"></div>
+                        </div>
+                    </div>
+                    <div class="repisa-puerta__left face"></div>
+                    <div class="repisa-puerta__top face"></div>
+                    <div class="repisa-puerta__bottom face"></div>
+                </div>
+                <div class="repisa-puerta">
+                    <div class="repisa-puerta__front face"></div>
+                    <div class="repisa-puerta__back face"></div>
+                    <div class="repisa-puerta__right face flex">
+                        <div class="manija">
+                            <div class="manija__front face"></div>
+                            <div class="manija__back face"></div>
+                            <div class="manija__right face"></div>
+                            <div class="manija__left face"></div>
+                            <div class="manija__top face"></div>
+                            <div class="manija__bottom face"></div>
+                        </div>
+                    </div>
+                    <div class="repisa-puerta__left face"></div>
+                    <div class="repisa-puerta__top face"></div>
+                    <div class="repisa-puerta__bottom face"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buro" id="buro">
+            <div class="fs"></div>
+            <div class="buro-t">
+                <div class="buro-t__front face"></div>
+                <div class="buro-t__back face"></div>
+                <div class="buro-t__right face"></div>
+                <div class="buro-t__left face"></div>
+                <div class="buro-t__top face"></div>
+                <div class="buro-t__bottom face"></div>
+            </div>
+            <div class="buro-b">
+                <div class="buro-b__front face"></div>
+                <div class="buro-b__back face"></div>
+                <div class="buro-b__right face"></div>
+                <div class="buro-b__left face"></div>
+                <div class="buro-b__top face"></div>
+                <div class="buro-b__bottom face"></div>
+            </div>
+            <div class="buro-l">
+                <div class="buro-l__front face"></div>
+                <div class="buro-l__back face"></div>
+                <div class="buro-l__right face"></div>
+                <div class="buro-l__left face"></div>
+                <div class="buro-l__top face"></div>
+                <div class="buro-l__bottom face"></div>
+            </div>
+            <div class="buro-c">
+                <div class="buro-c__front face"></div>
+                <div class="buro-c__back face"></div>
+                <div class="buro-c__right face"></div>
+                <div class="buro-c__left face"></div>
+                <div class="buro-c__top face"></div>
+                <div class="buro-c__bottom face"></div>
+            </div>
+            <div class="buro-r">
+                <div class="buro-r__front face"></div>
+                <div class="buro-r__back face"></div>
+                <div class="buro-r__right face"></div>
+                <div class="buro-r__left face"></div>
+                <div class="buro-r__top face"></div>
+                <div class="buro-r__bottom face"></div>
+            </div>
+            <div class="buro-puertas" id="buro">
+                <div class="buro-puerta buro-p">
+                    <div class="buro-puerta__front face"></div>
+                    <div class="buro-puerta__back face"></div>
+                    <div class="buro-puerta__right face flex">
+                        <div class="manija">
+                            <div class="manija__front face"></div>
+                            <div class="manija__back face"></div>
+                            <div class="manija__right face"></div>
+                            <div class="manija__left face"></div>
+                            <div class="manija__top face"></div>
+                            <div class="manija__bottom face"></div>
+                        </div>
+                    </div>
+                    <div class="buro-puerta__left face"></div>
+                    <div class="buro-puerta__top face"></div>
+                    <div class="buro-puerta__bottom face"></div>
+                </div>
+                <div class="buro-puerta">
+                    <div class="buro-puerta__front face"></div>
+                    <div class="buro-puerta__back face"></div>
+                    <div class="buro-puerta__right face flex">
+                        <div class="manija">
+                            <div class="manija__front face"></div>
+                            <div class="manija__back face"></div>
+                            <div class="manija__right face"></div>
+                            <div class="manija__left face"></div>
+                            <div class="manija__top face"></div>
+                            <div class="manija__bottom face"></div>
+                        </div>
+                    </div>
+                    <div class="buro-puerta__left face"></div>
+                    <div class="buro-puerta__top face"></div>
+                    <div class="buro-puerta__bottom face"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bocina" id="bocina">
+            <div class="bocina-f">
+                <div class="bocina-f__front face"></div>
+                <div class="bocina-f__back face"></div>
+                <div class="bocina-f__right face"></div>
+                <div class="bocina-f__left face"></div>
+                <div class="bocina-f__top face"></div>
+                <div class="bocina-f__bottom face"></div>
+            </div>
+            <div class="bocina-c">
+                <div class="bocina-c__front face"></div>
+                <div class="bocina-c__back face"></div>
+                <div class="bocina-c__right face"></div>
+                <div class="bocina-c__left face"></div>
+                <div class="bocina-c__top face"></div>
+                <div class="bocina-c__bottom face"></div>
+            </div>
+            <div class="bocina-b">
+                <div class="bocina-b__front face"></div>
+                <div class="bocina-b__back face"></div>
+                <div class="bocina-b__right face"></div>
+                <div class="bocina-b__left face"></div>
+                <div class="bocina-b__top face"></div>
+                <div class="bocina-b__bottom face"></div>
+            </div>
+        </div>
+
+        <div class="librero" id="librero">
+            <div class="librero-f">
+                <div class="librero-f__front face"></div>
+                <div class="librero-f__back face"></div>
+                <div class="librero-f__right face"></div>
+                <div class="librero-f__left face"></div>
+                <div class="librero-f__top face"></div>
+                <div class="librero-f__bottom face"></div>
+            </div>
+            <div class="librero-c">
+                <div class="librero-c__front face"></div>
+                <div class="librero-c__back face"></div>
+                <div class="librero-c__right face"></div>
+                <div class="librero-c__left face"></div>
+                <div class="librero-c__top face"></div>
+                <div class="librero-c__bottom face"></div>
+            </div>
+            <div class="librero-b">
+                <div class="librero-b__front face"></div>
+                <div class="librero-b__back face"></div>
+                <div class="librero-b__right face"></div>
+                <div class="librero-b__left face"></div>
+                <div class="librero-b__top face"></div>
+                <div class="librero-b__bottom face"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById("audio");
+        const audio2 = document.getElementById("audio2");
+        const audio3 = document.getElementById("audio3");
+        const audio4 = document.getElementById("audio4");
+        const bocina = document.getElementById("bocina");
+        const librero = document.getElementById("librero");
+        const repisa = document.getElementById("repisa");
+        const buro = document.getElementById("buro");
+
+        function radioTocando() {
+            audio.play();
+            bocina.classList.toggle("is-bocina-active");
+        }
+
+        function libreroAbierto() {
+            audio2.play();
+            librero.classList.toggle("is-librero-open");
+        }
+
+        function repisaAbierto() {
+            audio3.play();
+            repisa.classList.toggle("is-repisa-open");
+        }
+
+        function buroAbierto() {
+            audio4.play();
+            buro.classList.toggle("is-buro-open");
+        }
+
+        bocina.addEventListener("click", radioTocando);
+        librero.addEventListener("click", libreroAbierto);
+        repisa.addEventListener("click", repisaAbierto);
+        buro.addEventListener("click", buroAbierto);
+    </script>
+</body>
+</html>
