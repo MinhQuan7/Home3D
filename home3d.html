@@ -2945,16 +2945,16 @@ body {
 <body>
    
 <audio id="audio">
-  <source src="https://raw.githubusercontent.com/ricardoolivaalonso/recursos/master/radio/radio.mp3" type="audio/mpeg"/>
+  <source src="https://github.com/MinhQuan7/audioHome3D/denvau_mo.mp3" type="audio/mpeg"/>
 </audio>
 <audio id="audio2">
-  <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/librero.mp3" type="audio/mpeg"/>
+  <source src="https://github.com/MinhQuan7/audioHome3D/dungxaanhnhe.mp3" type="audio/mpeg"/>
 </audio>
 <audio id="audio3">
-  <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/repisa.mp3" type="audio/mpeg"/>
+  <source src="https://github.com/MinhQuan7/audioHome3D/lang_rhymastic.mp3" type="audio/mpeg"/>
 </audio>
 <audio id="audio4">
-  <source src="https://raw.githubusercontent.com/ricardoolivaalonso/Codepen/master/Bedroom/sounds/buro.mp3" type="audio/mpeg"/>
+  <source src="https://github.com/MinhQuan7/audioHome3D/denvau_mo.mp3" type="audio/mpeg"/>
 </audio>
 <div class="shadows rb">
   <div class="shadow6"> </div>
@@ -3829,10 +3829,7 @@ body {
 </div>
 
     <script>
-/*
-		Designed by: Allen·Z 
-		Original image: https://dribbble.com/shots/6377158-My-Home-1-4
-*/
+
 let bocina = document.querySelector("#bocina");
 let bocinaA = document.querySelectorAll(".bocina-a");
 let librero = document.querySelector("#librero");
@@ -3840,6 +3837,8 @@ let libreroPuerta = document.querySelector(".librero-r1");
 let repisa = document.querySelector("#repisa");
 let repisaPuerta = document.querySelector(".repisa-p");
 let buro = document.querySelector("#buro");
+
+//________________Audio____________________
 let a = document.querySelector("#audio");
 let a2 = document.querySelector("#audio2");
 let a3 = document.querySelector("#audio3");
@@ -3851,7 +3850,6 @@ let radioTocando = () => {
 	bocinaA[1].classList.toggle("is-bocina-active");
 
 	a.loop = true;
-
 	if (a.paused) a.play();
 	else {
 		a.pause();
@@ -3891,12 +3889,12 @@ let buroAbierto = () => {
 	}
 };
 
-/*******************/
+/*********************************************/
 bocina.addEventListener("click", radioTocando);
 librero.addEventListener("click", libreroAbiero);
 repisa.addEventListener("click", repisaAbierto);
 buro.addEventListener("click", buroAbierto);
 
-    </script>
+  </script>
 </body>
 </html>
